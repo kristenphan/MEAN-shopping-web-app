@@ -3,6 +3,7 @@ import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { AppService } from '../app.service';
+import { NotifierService } from '../notifier.service';
 
 @Component({
   selector: 'app-home',
@@ -26,7 +27,8 @@ export class HomeComponent {
   );
 
   constructor(private breakpointObserver: BreakpointObserver,
-              public appService: AppService) {}
+              public appService: AppService,
+              private notifierService: NotifierService) {}
 
   ngOnInit() {
     this.isHandsetObserver.subscribe(currentObserverValue => {
@@ -41,7 +43,10 @@ export class HomeComponent {
         this.loadCards();
       },
       error => {
-        alert('There was an error in receiving data from server. Please come again later!');
+        // alert('There was an error in receiving data from server. Please come again later!');
+        // Use Angular Material Snack Bar and an Angular service to show error message on failed api call
+        this.notifierService.showNotification('There was an error in receiving data from server. Please come again later!',
+                                               'OK');
       }
     );
   }
